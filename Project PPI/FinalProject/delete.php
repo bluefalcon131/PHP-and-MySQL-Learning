@@ -34,40 +34,47 @@
 
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Leeds Indonesian Student Association</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="stylesheet.css">
-	</head>
-	<body>
-    	<div id="wrapper">
-            <div id="main">
-                <?php require_once('header_logged.php')?>
-                
-                <div class="hero">
-                    <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
-                </div>
 
-                <div class="main-info"> 
-                    <h1><?php echo $_SESSION['fullname']; ?>, are you sure you want to delete your account?</h1>
+<head>
+    <meta charset="utf-8">
+    <title>Leeds Indonesian Student Association</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
 
-                    <p>Deleting your account is permanent and will remove all content including comments and profile settings.</p>
-                    <form action="delete.php" method="post">
+<body>
+    <div id="wrapper">
+        <div id="main">
+            <?php require_once('header_logged.php')?>
+
+            <div class="hero">
+                <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
+            </div>
+
+            <div class="main-info">
+                <h1><?php echo $_SESSION['fullname']; ?>, are you sure you want to delete your account?</h1>
+
+                <p>Deleting your account is permanent and will remove all content including comments and profile settings.</p>
+
+                <form action="delete.php" method="post">
+                    <p class="forms">
                         Yes:<input type="radio" name="delete" value="1" /><br />
                         No: <input type="radio" name="delete" value="0" checked="checked" /><br />
                         <input type="submit" name="submit" value="submit" />
-                    </form>
-                </div>
-                
-                <div id="footer">
-                    <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-                 </div>
+                    </p>
+                </form>
+
+
             </div>
 
+            <div id="footer">
+                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
+            </div>
         </div>
-    </body>
-</html>
 
+    </div>
+</body>
+
+</html>

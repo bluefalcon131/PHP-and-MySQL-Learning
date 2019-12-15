@@ -1,5 +1,7 @@
 <?php
     require_once('checklog.php');
+    require_once('db_connect.php');
+    require_once('function.php');
     $username=$_SESSION['username'];
     $fullname=$_SESSION['fullname'];
     $db_email=$_SESSION['email'];
@@ -7,6 +9,22 @@
     $db_course=$_SESSION['course'];
     $db_level=$_SESSION['level'];
 
+    mysqli_select_db($db_server, $db_database);
+    $query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID";
+    $result = mysqli_query($db_server, $query);
+    if (!$result) die("Database access failed: " . mysqli_error($db_server));
+    while($row = mysqli_fetch_array($result)){
+        //CHECK THAT THE COMMENT USERID MATCHES SESSION USER ID
+        if ($row['userID'] == $_SESSION['userID']){
+            $comments .= "<p><strong>" . $row['FullName'] . "</strong>" ."<em> (" . $row['Username'] . ")" . " - " . $row['commDate'] . ")</em><br /> " .$row['comment'] . "</p><hr />";
+            $comments .=" <a href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=account.php'>Delete</a>";
+        }
+    }
+    if (!(isset($comments))){
+        $comments = "You haven't posted any comments. Click <a href='forum.php'>here</a> here to post something.";
+    }
+    mysqli_free_result($result);
+    mysqli_close($db_server); 
 ?>
 <html>
 	<head>
@@ -60,7 +78,11 @@
                         <br/>
                         <h4><a href="delete.php">Delete Account</a></h4>
                         <h4><a href="logout.php">Log Out</a></h4>
+                        <br/><br/><br/><br/><br/>
                     </div>
+                    <hr>
+                    <h1>Your Comments: </h1>
+                    <p><?php echo $comments; echo $message; ?></p>
                 </div>
                 
                 <div id="footer">

@@ -44,48 +44,54 @@
 ?>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Leeds Indonesian Student Association</title>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="stylesheet.css">
-        <link rel='icon' href='favicon.ico' type='image/x-icon'/ >
-	</head>
-	<body>
-    	<div id="wrapper">
-            <div id="main">
-                <?php require_once("header_guest.php")?>
-                <div class="hero">
-                    <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
-                </div>
 
-                <div class="main-info">
-                    <div class ="login-register">
-                        <form action='index.php' method='POST'>
-                            <h1><strong>Welcome to PPI Greater Leeds!</strong></h1>
-                            <p>This website contains personal information about our members. Please log in to continue.</p>
-                            <h4><?php echo $message; ?></h4>
+<head>
+    <meta charset="utf-8">
+    <title>Leeds Indonesian Student Association</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel='icon' href='favicon.ico' type='image/x-icon' />
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="main">
+            <?php require_once("header_guest.php")?>
+            <div class="hero">
+                <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
+            </div>
+
+            <div class="main-info">
+                <div class="login-register">
+                    <form action='index.php' method='POST'>
+                        <h1><strong>Welcome to PPI Greater Leeds!</strong></h1>
+                        <p>This website contains personal information about our members. Please log in to continue.</p>
+                        <h4><?php echo $message; ?></h4>
+                        <p class="forms">
                             Username: <input type='text' name='username'><br />
                             Password: <input type='password' name='password'><br />
                             <input type='submit' name='submit' value='Login'>
-                            <input name='reset' type='reset' value='Reset'><br/><br/><br/>
-                        </form>
-                    </div>
-            <div>
-                <br/>
-                <h3>Not yet a member?</h3>
-                <p><a href="register.php">Sign up here</a> to access the full website.</p>
-            </div>
-                </div>
-                <div id="footer">
-                    <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-                 </div>
-            </div>
+                            <input name='reset' type='reset' value='Reset'><br />
+                        </p>
 
+                    </form>
+                </div>
+                <div>
+                    <br />
+                    <h3>Not yet a member?</h3>
+                    <p><a href="register.php">Sign up here</a> to access the full website.</p>
+                </div>
+            </div>
+            <div id="footer">
+                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
+            </div>
         </div>
 
-                
+    </div>
 
-    </body>
+
+
+</body>
+
 </html>

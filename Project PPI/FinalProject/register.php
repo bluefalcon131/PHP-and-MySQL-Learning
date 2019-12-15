@@ -120,9 +120,12 @@
 
             <div class="main-info">
                 <h1>User Registration</h1>
-                <div class="register-form">
-                    <form action='register.php' method='post'>
-                        <h4> <?php echo $message; ?></h4>
+                <p>In accordance to the 2006 Constitution of the Republic of Indonesia No. 23 Article 4, every Indonesian citizen (Warga Negara Indonesia) who is currently living abroad is required to report their current address and status of residence permit to the Indonesian government. This is done to help protect Indonesian citizens who are in the UK / Ireland, register to vote for the General Election and guarantees immigration and consular services at the Indonesian Embassy in London. More information about this policy can be found <a href="https://indonesianembassy.org.uk/consular/pelayanan-kekonsuleran-bagi-wni/lapor-diri">here</a>.</p>
+
+                <p>PPI Greater Leeds will be using this data to monitor the number of members for the 2019/2020 academic year, as well as the arrangements of organisation-wide events. This data will not be published or shared in any way, shape or form. The confidentiality of data will be maintained and accounted for by PPI Greater Leeds.</p>
+                <form action='register.php' method='post'>
+                    <h4> <?php echo $message; ?></h4>
+                    <p class="forms">
                         Username:<input type='text' name='username' value='<?php echo $username; ?>'><br />
 
                         Password: <input type='password' name='password'><br />
@@ -143,33 +146,30 @@
                         </select><br />
 
                         Level:<select name="level">
-                            <option value="FoundationProgram">Foundation Program</option>
+                            <option value="Foundation Program">Foundation Program</option>
                             <option value="Undergraduate">Undergraduate</option>
                             <option value="Masters">Masters</option>
                             <option value="Phd">PHD</option>
                         </select><br />
 
                         Course:<input type='text' name='course' value='<?php echo $course; ?>'><br />
+                    </p>
 
 
-                        <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g"></div>
-                        <input type='submit' name='submit' value='Register'>
-                        <input name='reset' type='reset' value='Reset'><br/><br/><br/>
-                    </form>
-                    
-                    
-                </div>
 
-                <div class="register-information">
-                    <p>In accordance to the 2006 Constitution of the Republic of Indonesia No. 23 Article 4, every Indonesian citizen (Warga Negara Indonesia) who is currently living abroad is required to report their current address, status of residence permit, and other important events (such as birth, marriage, divorce, or death) to the Indonesian government. This is done to help protect Indonesian citizens who are in the UK / Ireland, register to vote for the General Election and guarantees immigration and consular services at the Indonesian Embassy in London. More information about this policy can be found <a href="https://indonesianembassy.org.uk/consular/pelayanan-kekonsuleran-bagi-wni/lapor-diri">here</a>.</p>
-                    <p>PPI Greater Leeds will be using this data to monitor the number of members for the 2019/2020 academic year, as well as the arrangements of organisation-wide events. This data will not be published or shared in any way, shape or form. The confidentiality of data will be maintained and accounted for by PPI Greater Leeds.</p>
-                    
-                    <h3>Already a member?</h3>
-                    <p><a href='index.php'>Click here</a> to login.</p>
-                </div>
+                    <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g"></div>
+                    <input type='submit' name='submit' value='Register'>
+                    <input name='reset' type='reset' value='Reset'><br /><br /><br />
+                </form>
+
+
+
+
+                <h3>Already a member?</h3>
+                <p><a href='index.php'>Click here</a> to login.</p>
 
                 <div>
-                    
+
                 </div>
 
             </div>

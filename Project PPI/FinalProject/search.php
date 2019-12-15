@@ -6,7 +6,7 @@
     $submit = trim($_POST['submit']);
     $data = json_decode($response);
     $output = "";
-    if ($submit=='Submit'){
+    if ($submit=='Search'){
         $captcha=$_POST['g-recaptcha-response'];
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $secretkey = "6Le4CAETAAAAAGQftFiDise1KTxFd6qTsowFR-TL"; //secret key
@@ -24,13 +24,13 @@
             mysqli_query($db_server, "INSERT INTO Students FullName VALUES 'test'");
             if (!$result) die("Database access failed: " . mysqli_error($db_server));
             $message = "<strong>Your search found the following students:</strong>" . "<br/><br/>";
-            $tableh ='<th width="300" align="left">Full Name</th>
-                    <th width="200" align="left">Degree</th>
-                    <th width="400" align="left">Course</th>
-                    <th width="250" align="left">University</th>
+            $tableh ='<th width="450" align="left">Full Name</th>
+                    <th width="150" align="left">Degree</th>
+                    <th width="600" align="left">Course</th>
+                    <th width="400" align="left">University</th>
                     <th width="250" align="left">Email</th>';
             while($row = mysqli_fetch_array($result)){ 
-                $tabler .= "<tr><td>" . $row['FullName'] . "</td><td>" . $row['Level'] . "</td><td>" . $row['Course'] . "</td><td>" . $row['University'] . "</td><td>" . $row['Email'] . "</td></tr>";
+                $tabler .= "<tr><td>" . $row['FullName'] . "</td><td>" . $row['Level'] . "</td><td>" . $row['Course'] . "</td><td>" . $row['University'] . "</td><td>" . " <a href='mailto:" . $row['Email'] . "' target='_blank' >" . $row['Email'] . "</a>" . "</td></tr>";
             }
             mysqli_free_result($result);
             //echo $message . $output;
@@ -57,19 +57,18 @@
             <?php require_once('header_logged.php')?>
             <div class="main-info">
                 <h1>Search for Members</h1>
-                <p>You can use the Search bar to look for other members in the society based on their name, course, and university. Simply select a category from the dropdown and enter your search keyword.</p>
+                <p>You can use the Search bar to look for other members in the society based on their name, course, and university. Simply select a category from the dropdown and enter your search keyword. If you'd like to contact anyone, click on their email address to send them an email.</p>
                 <form action="search.php" method="post">
-                    <p>Pick a Category to search from:</p>
-                    <select name="category_input">
+                    <select class="category" name="category_input">
                         <option value="FullName">Name</option>
                         <option value="Course">Course</option>
                         <option value="University">University</option>
                         <option value="Level">Level</option>
                     </select><br />
-                    <input type="text" name="search_input" placeholder="Enter your search keyword here"/><br />
+                    <input class="category" type="text" name="search_input" placeholder="Enter your search keyword here"/><br />
+                    <input type="submit" class="category" name="submit" value="Search" /><br/><br/>
                     <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g">
                     </div>
-                    <input type="submit" name="submit" value="Submit" /><br/><br/><br/><br/>
                 </form>
                 <h3><?php echo $message; ?></h3>
                 <p>

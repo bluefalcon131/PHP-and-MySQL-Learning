@@ -4,36 +4,38 @@
 /*---------------Body---------------*/
 
 body {
-	font-family: 'Roboto', 'sans-serif';
-	margin:0;
+    font-family: 'Roboto', 'sans-serif';
+    margin: 0;
     background-color: #d4cdc7;
 }
 
-th, td {
-  padding: 15px;
-  text-align: left;
+th,
+td {
+    padding: 15px;
+    text-align: left;
 }
 
 
 /*---------------Text---------------*/
 h1 {
-    font-size:30px;
-	font-family: 'Montserrat', sans-serif;
-	color:black;
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
 }
 
 h3 {
-	font-size: 20px;
+    font-size: 20px;
     font-family: 'Montserrat', sans-serif;
-	color:black;
+    color: black;
 }
 
 h4 {
-	font-size: 20 px;
-    color:#e6300c;
-   font-family: 'Montserrat', sans-serif;
+    font-size: 20 px;
+    color: #e6300c;
+    font-family: 'Montserrat', sans-serif;
 }
-p{
+
+p {
     line-height: 24px;
     font-size: 16px;
     font-family: 'Open Sans', 'sans-serif';
@@ -43,7 +45,7 @@ p{
 /*---------------Header (Logo + Navigation Bar)---------------*/
 
 #header {
-	height:150px;
+    height: 150px;
     background-color: #e6300c;
 }
 
@@ -76,11 +78,12 @@ p{
     font-family: 'Gotham', 'sans-serif';
 }
 
-.main-navbar a:hover, {
-  background-color: #ad232d;
+.main-navbar a:hover,
+    {
+    background-color: #ad232d;
 }
 
-.main-navbar  .current{
+.main-navbar .current {
     background-color: #ad232d;
     text-decoration: underline;
 }
@@ -112,7 +115,7 @@ p{
 /*---------------Footer---------------*/
 
 #footer {
-	height:50px;
+    height: 50px;
     background-color: #303030;
     float: left;
     width: 100%;
@@ -124,7 +127,7 @@ p.footer {
     padding-bottom: 10px;
 }
 
-a.footer-link{
+a.footer-link {
     color: white;
 }
 
@@ -132,15 +135,14 @@ a.footer-link{
 /*---------------Main Content---------------*/
 
 #wrapper {
-	width: 75em;
-	margin: auto;
+    width: 75em;
+    margin: auto;
 }
 
-#main
-{
-	background: #faf6f2;
-	text-align: left;
-	overflow: auto;
+#main {
+    background: #faf6f2;
+    text-align: left;
+    overflow: auto;
 
 }
 
@@ -148,9 +150,9 @@ a.footer-link{
     width: 100%;
     float: left;
     text-align: justify;
-    color:  white;
+    color: white;
     background-color: #c1280a;
-    
+
 }
 
 .g-recaptcha {
@@ -162,16 +164,16 @@ a.footer-link{
 
     text-align: left;
     margin-bottom: 30px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 
 .hero {
-    width:100%;
+    width: 100%;
     padding-top: -50px;
 
-        
+
 }
 
 
@@ -189,60 +191,158 @@ a.footer-link{
     padding-left: 15px;
 }
 
-input[type=text], input[type=password], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-        font-family: 'Open Sans', 'sans-serif';
+/*---------------Forms---------------*/
+p.forms {
+    text-align: left !important;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
 }
 
-input[type=submit], input[type=reset]{
-  width: 40%;
-    float: left;
-    padding-right: 15px;
-  background-color: #918d8a;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 8px 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+input[type=text],
+select,
+textarea,
+input[type=password] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid sans-serif;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+    font-family: sans-serif;
+}
+
+
+input[type=submit],
+input[type=reset] {
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #e6300c;
+    margin-top: 10px;
+    margin-right: 4px;
+}
+
+input[type=submit]:hover,
+input[type=reset]:hover {
+    background-color: indianred;
+}
+
+input[type=text],
+input[type=password],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', 'sans-serif';
 }
 
 button {
     width: 40%;
     float: left;
     padding-right: 15px;
-  background-color: #918d8a;
+    background-color: #e6300c;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 8px 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover,
+input[type=reset]:hover {
+    background-color: #ada7a3;
+}
+
+/*---------------Search (Search Bar and Results Table)---------------*/
+select.category {
+    width: 15%;
+    padding: 12px;
+    border: 1px solid sans-serif;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    margin-right: 10px;
+    resize: vertical;
+    font-family: sans-serif;
+    float: left;
+    height: 45px;
+}
+
+input[type=text].category {
+    width: 55%;
+    padding: 12px;
+    border: 1px solid sans-serif;
+    border-radius: 4px;
+    margin-top: -13px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: sans-serif;
+    float: left;
+    height: 45px;
+}
+
+input[type=submit].category {
+    width: 15%;
+    float: left;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: red;
+    margin-top: -32px;
+    margin-right: 4px;
+    height: 45px;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(even){
+    background-color: #f3e9e0;
+}
+
+tr {
+    background-color: #faf6f2;
+}
+
+tr:hover {background-color: #ddd;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #d7b796;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 8px 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color: #45a049;
 }
 
 
-.account-details-1{
+
+.account-details-1 {
     width: 35%;
-    float:left;
+    float: left;
     padding-bottom: 20px;
 }
 
-.account-details-2{
+.account-details-2 {
     width: 35%;
-    float:left;
+    float: left;
 }
 
-.account-links{
+.account-links {
     width: 30%;
-    float:left;
+    float: left;
 }

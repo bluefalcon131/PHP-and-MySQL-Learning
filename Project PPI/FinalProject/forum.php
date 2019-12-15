@@ -2,8 +2,7 @@
     require_once('checklog.php');
     require_once "function.php";
     require_once "db_connect.php";
-    $comments = '';
-    $message = $message = $comments = $output = "";
+    $message = $comments = $output = "";
     if (!$db_server){
         die("Unable to connect to MySQL: " . mysqli_connect_error());
     }else{
@@ -16,7 +15,7 @@
                 $query = "INSERT INTO comments (userID, comment) VALUES (" .
                 $_SESSION['userID'] . ", '$comment')";
                 mysqli_query($db_server, $query) or
-                die("Insert failed: " . mysqli_error($db_server) );
+                die("Insert failed: " . mysqli_error($db_server));
                 $message = "Thanks for your comment!";
             }else{
                 $message = "Invalid form submission";
@@ -24,16 +23,19 @@
         }
     }
 
-//Create comments with or without submission
-mysqli_select_db($db_server, $db_database);
-$query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID";
-$result = mysqli_query($db_server, $query);
-if (!$result) die("Database access failed: " . mysqli_error($db_server) );
-while($row = mysqli_fetch_array($result)){
-$comments .= "<p><em>" . $row['Username'] . ": (" . $row['commDate'] .
-")</em><br /> " .$row['comment'] . "</p><hr />";
-}
-mysqli_free_result($result);
+    mysqli_select_db($db_server, $db_database);
+    $query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID ORDER BY comments.post_ID";
+    $result = mysqli_query($db_server, $query);
+        if (!$result) die("Database access failed: " . mysqli_error($db_server) );
+        while($row = mysqli_fetch_array($result)){
+            $comments .= "<p><strong>" . $row['FullName'] . "</strong>" ."<em> (" . $row['Username'] . ")" . " - " . $row['commDate'] . ")</em><br /> " .$row['comment'] . "</p><hr />";
+            //CHECK THAT THE COMMENT USERID MATCHES SESSION USER ID
+            if ($row['userID'] == $_SESSION['userID']){
+                $comments .=" <a href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=forum.php'>Delete</a>";
+            }
+            //$comments .="</p><hr/>";
+        }
+        mysqli_free_result($result);
         mysqli_close($db_server); 
 ?>
 
@@ -60,9 +62,10 @@ mysqli_free_result($result);
                     <form action="forum.php" method="post">
                         <p>Type your comments in the box below. </p>
                         <h4><?php echo $message; ?></h4>
-                        Comment: <textarea rows="2" cols="30" name="comment"></textarea>
-                        <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g"></div>
-                        <input type="submit" id="submit" name="submit" value="Submit" /><br/>
+                        <p class="forms">
+                            Comment: </p> <textarea rows="5" cols="50" name="comment" placeholder="Type your comment here"></textarea>
+                            <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g"></div>
+                            <input type="submit" id="submit" name="submit" value="Submit" /><br />
                         <h3>Comments</h3>
                         <?php echo $comments; ?>
                     </form>
