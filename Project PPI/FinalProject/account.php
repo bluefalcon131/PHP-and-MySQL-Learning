@@ -10,25 +10,29 @@
     $db_level=$_SESSION['level'];
 
     mysqli_select_db($db_server, $db_database);
-    $query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID";
+    $query = "SELECT * FROM comments INNER JOIN Students ON comments.userID = Students.ID WHERE Students.ID = " . $_SESSION['userID'] . " ORDER BY comments.post_ID";
     $result = mysqli_query($db_server, $query);
-    if (!$result) die("Database access failed: " . mysqli_error($db_server));
+    if (!$result) die("Database access failed: " . mysqli_error($db_server) );
     while($row = mysqli_fetch_array($result)){
-        //CHECK THAT THE COMMENT USERID MATCHES SESSION USER ID
-        if ($row['userID'] == $_SESSION['userID']){
-            $comments .= "<div class = 'comments'><p>" . 
-                            "<strong>" . $row['FullName'] . "</strong>" .
-                            "<em> (" . $row['Username'] . ")" . " - " . 
-                            $row['commDate'] . "</em></br>" .  
-                            $row['comment'] .    "<br/>"; 
+        // Open divider per comment
+        $comments .=  "<div class = 'comments'><p>" . "<strong>" . $row['FullName'] . "</strong>" ."<em> (" . $row['Username'] . ")" . " - " . $row['commDate'] . "</em></br>" .  $row['comment'] .    "<br/>"; 
+        if(!isset($_SESSION["liked_" . $row['post_ID']])){ // Comment is not liked yet
+            $comments .= "<a href='forum.php?likeid=" . $row['post_ID'] . "'><i class='fa fa-thumbs-up' style='color:grey'></i></a>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
+        }else{
             $comments .= "<i class='fa fa-thumbs-up' style='color:green'></i>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
-            $comments .= "<i class='fa fa-thumbs-down' style='color:#e6300c'></i>&nbsp" . $row['dislike'];
-            $comments .= "&nbsp | &nbsp <a class='forum-button' href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=account.php'><i class='fa fa-trash'></i>   Delete</a>   "; 
-            $comments .= "</p><hr/></div>";
         }
-    }
-    if (!(isset($comments))){
-        $comments = "You haven't posted any comments. Click <a href='forum.php'>here</a> here to post something.";
+        if(!isset($_SESSION["disliked_" . $row['post_ID']])){ // Comment is not disliked yet
+            $comments .= "<a href='forum.php?dislikeid=" . $row['post_ID'] . "'><i class='fa fa-thumbs-down' style='color:grey'></i></a>&nbsp" . $row['dislike'];
+        }else{
+            $comments .= "<i class='fa fa-thumbs-down' style='color:#e6300c'></i>&nbsp" . $row['dislike'];
+        }
+        $comments .= "&nbsp | &nbsp" . "<a class='forum-button' href='reply.php?postid=" . $row['post_ID'] . "'><i class='fa fa-reply'></i>   Reply</a>   ";
+        // CHECK THAT THE COMMENT USERID MATCHES SESSION USER ID
+        if ($row['userID'] == $_SESSION['userID']){
+            $comments .="&nbsp | &nbsp" . "<a class='forum-button' href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=forum.php'><i class='fa fa-trash'></i>   Delete</a>   ";
+        }
+        // Close divider per comment
+        $comments .= "</p><hr/></div>";
     }
     mysqli_free_result($result);
     mysqli_close($db_server); 
