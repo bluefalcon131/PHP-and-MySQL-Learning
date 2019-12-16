@@ -69,7 +69,7 @@ if(isset($_POST['submit'])){
 <body>
     <div id="wrapper">
         <div id="main">
-            <?php require_once("header_guest.php")?>
+            <?php require_once("header_logged.php")?>
 
             <div class="hero">
                 <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
@@ -77,11 +77,12 @@ if(isset($_POST['submit'])){
 
             <div class="main-info">
                 <h1>Change Password</h1>
+                <h3><a href='account.php'> Back to account</a></h3>
 
                 <form method="post" action="change_password.php">
                     <h4><?php echo $message; ?></h4>
                     <p class="forms">
-                        Old Password:<input type='text' name='oldpassword' value='<?php echo $password; ?>'>
+                        Old Password:<input type='password' name='oldpassword' value='<?php echo $password; ?>'>
                         New Password: <input type='password' name='newpassword'>
 
                         Repeat New Password: <input type='password' name='repeatnewpassword'>

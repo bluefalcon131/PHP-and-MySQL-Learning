@@ -19,70 +19,67 @@ $newcourse = trim($_POST['newcourse']);
 
 session_start();
 if(isset($_POST['submit'])){
-        
-
-        if (strlen($username)>25){
+    if ($fullname&&$email&&$username&&$password&&$repeatpassword&&$university&&$course&&$level){
+        if (strlen($username)>25) {
             $message = "Username is too long";
-            
-            }else{
-                require_once("db_connect.php"); 
+        }else{
+            if($db_server){
+                // Cleaning all string inputs
+                $fullname = clean_string($db_server, $fullname);
+                $email = clean_string($db_server, $email);
+                $university = clean_string($db_server, $university);
+                $level = clean_string($db_server, $level);
+                $course = clean_string($db_server, $course);
+                $username = clean_string($db_server, $username);
 
-                if($db_server){ 
+                // Selecting Database
+                mysqli_select_db($db_server, $db_database);
 
-                    // Cleaning all string inputs
-                    $fullname = clean_string($db_server, $fullname);
-                    $email = clean_string($db_server, $email);
-                    $university = clean_string($db_server, $university);
-                    $level = clean_string($db_server, $level);
-                    $course = clean_string($db_server, $course);
-                    $username = clean_string($db_server, $username);
+                // Check whether the new username exists
+                $query="SELECT username FROM Students WHERE username='$newusername'";
+                $result=mysqli_query($db_server, $query);
+                if (($row = mysqli_fetch_array($result)) && ($username != $newusername)){
+                    $message = "Username already exists. Please try again.";
+                }else{
+                    // Updating database values
+                    $query = "UPDATE Students SET
+                    Username = '$newusername',
+                    FullName = '$newfullname',
+                    Email = '$newemail',
+                    University = '$newuniversity',
+                    Level = '$newlevel',
+                    Course = '$newcourse' 
+                    WHERE ID =". $_SESSION['userID']."";
+                    mysqli_query($db_server, $query) or
+                    die("Insert failed. ". mysqli_error($db_server));
 
-                    // Selecting Database
-                    mysqli_select_db($db_server, $db_database);
+                    // Updating Session Values
+                    $_SESSION['username'] = $newusername;
+                    $_SESSION['fullname']= $newfullname;
+                    $_SESSION['email'] = $newemail;
+                    $_SESSION['university'] = $newuniversity;
+                    $_SESSION['level'] = $newlevel;
+                    $_SESSION['course'] = $newcourse;
 
-                    // Check whether the new username exists
-                    $query="SELECT username FROM Students WHERE username='$newusername'";
-                    $result=mysqli_query($db_server, $query);
-                    if (($row = mysqli_fetch_array($result)) && ($username != $newusername)){
-                        $message = "Username already exists. Please try again.";
-                    }else{
-                        // Updating database values
-                        $query = "UPDATE Students SET
-                        Username = '$newusername',
-                        FullName = '$newfullname',
-                        Email = '$newemail',
-                        University = '$newuniversity',
-                        Level = '$newlevel',
-                        Course = '$newcourse' 
-                        WHERE ID =". $_SESSION['userID']."";
-                        mysqli_query($db_server, $query) or
-                        die("Insert failed. ". mysqli_error($db_server));
+                    // Updating Page Values
+                    $username = $newusername;
+                    $fullname = $newfullname;
+                    $email = $newemail;
+                    $university = $newuniversity;
+                    $level = $newlevel;
+                    $course = $newcourse;
 
-                        // Updating Session Values
-                        $_SESSION['username'] = $newusername;
-                        $_SESSION['fullname']= $newfullname;
-                        $_SESSION['email'] = $newemail;
-                        $_SESSION['university'] = $newuniversity;
-                        $_SESSION['level'] = $newlevel;
-                        $_SESSION['course'] = $newcourse;
-                        
-                        // Updating Page Values
-                        $username = $newusername;
-                        $fullname = $newfullname;
-                        $email = $newemail;
-                        $university = $newuniversity;
-                        $level = $newlevel;
-                        $course = $newcourse;
-
-                        $message = "<strong>Profile updated successfully! <a href='account.php'> Click here </a>to go back to your account page. </strong>";
+                    $message = "<strong>Profile updated successfully! <a href='account.php'> Click here </a>to go back to your account page. </strong>";
                 }
                 require_once("db_close.php");
-
-            }
-        }
         
-}
+                }
 
+        }
+    }else{
+        $message = "Please fill in all fields";
+    }
+}
 ?>
 
 <html>
@@ -117,9 +114,8 @@ if(isset($_POST['submit'])){
 
             <div class="main-info">
                 <h1>Change User Details</h1>
-                <h3><a href='account.php'> Back to account</a></h3>
 
-                <form method="post" action="edit_details.php">
+                <form method="post" action="edit2.php">
                     <h4><?php echo $message; ?></h4>
                     <p class="forms">
                         Username:<input id='usernameInput' type='text' name='newusername'><br />
@@ -148,10 +144,8 @@ if(isset($_POST['submit'])){
                     </p>
 
                     <div>
-                        
                         <input type='submit' name='submit' value='Submit'>
                         <button type='button' name='reset' onclick='resetSelections()'>Reset</button>
-                        
                     </div>
                     <script>
                         resetSelections()

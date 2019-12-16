@@ -88,29 +88,6 @@ p {
     text-decoration: underline;
 }
 
-/*
- Responsive Dropdown Navbar Menu 
-@media screen and (max-width: 600px) {
-  .main-navbar.responsive {position: relative;}
-  .main-navbar.responsive a.icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .main-navbar.responsive a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-  .main-navbar.responsive .dropdown {float: none;}
-  .main-navbar.responsive .dropdown-content {position: relative;}
-  .main-navbar.responsive .dropdown .dropbtn {
-    display: block;
-    width: 100%;
-    text-align: left;
-  }
-}
-*/
 
 /*---------------Footer---------------*/
 
@@ -226,10 +203,6 @@ input[type=reset] {
     margin-right: 4px;
 }
 
-input[type=submit]:hover,
-input[type=reset]:hover {
-    background-color: indianred;
-}
 
 input[type=text],
 input[type=password],
@@ -245,20 +218,20 @@ select {
 }
 
 button {
-    width: 40%;
-    float: left;
-    padding-right: 15px;
-    background-color: #e6300c;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 8px 8px 0;
+    padding: 12px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    background-color: #e6300c;
+    margin-top: 10px;
+    margin-right: 4px;
 }
 
 input[type=submit]:hover,
-input[type=reset]:hover {
+input[type=reset]:hover,
+button:hover
+{
     background-color: #ada7a3;
 }
 
@@ -300,11 +273,26 @@ input[type=submit].category {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: red;
+    background-color: #e6300c;
     margin-top: -32px;
     margin-right: 4px;
     height: 45px;
 }
+
+input[type=submit].category:hover {
+    width: 15%;
+    float: left;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #ada7a3;
+    margin-top: -32px;
+    margin-right: 4px;
+    height: 45px;
+}
+
 
 td, th {
   border: 1px solid #ddd;
@@ -329,7 +317,7 @@ th {
   color: white;
 }
 
-
+/*---------------Account---------------*/
 
 .account-details-1 {
     width: 35%;
@@ -345,4 +333,18 @@ th {
 .account-links {
     width: 30%;
     float: left;
+}
+
+/*---------------Forum---------------*/
+.comments{
+    border: 1px solid #ddd;
+    padding: 8px;
+    background-color: #f3e9e0;
+}
+
+.replies{
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    background-color: #f3e9e0;
 }

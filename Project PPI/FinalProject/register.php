@@ -3,11 +3,11 @@
     require_once("function.php");
     // Grab the form data
     $submit = trim($_POST['submit']);
-    $fullname = trim($_POST['fullname']);
-    $email = trim($_POST['email']);
+    $fullname = test_input($_POST["fullname"]);
+    $email = test_input($_POST["email"]);
     $university = trim($_POST['university']);
     $level = trim($_POST['level']);
-    $course = trim($_POST['course']);
+    $course = test_input($_POST['course']);
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $repeatpassword = trim($_POST['repeatpassword']);
@@ -51,44 +51,54 @@
                             if (strlen($password)>25||strlen($password)<6) {
                                 $message = "Password must be 6-25 characters long";
                             }else{
-                                
-                                if($db_server){
-                                    //clean the input now that we have a db connection
-                                    $fullname = clean_string($db_server, $fullname);
-                                    $email = clean_string($db_server, $email);
-                                    $university = clean_string($db_server, $university);
-                                    $level = clean_string($db_server, $level);
-                                    $course = clean_string($db_server, $course);
-                                    $username = clean_string($db_server, $username);
-                                    $password = clean_string($db_server, $password);
-                                    $repeatpassword = clean_string($db_server, $repeatpassword);
-                                    mysqli_select_db($db_server, $db_database);
-                                    // check whether username exists
-                                    $query="SELECT username FROM Students WHERE username='$username'";
-                                    $result=mysqli_query($db_server, $query);
-                                    if ($row = mysqli_fetch_array($result)){
-                                        $message = "Username already exists. Please try again.";
-                                    }else{
-                                        $hash = password_hash($password, PASSWORD_DEFAULT);
-                                        $query = "INSERT INTO Students (username, password, fullname, email, university, level, course) VALUES
-                                        ('$username', '$hash','$fullname', '$email', '$university', '$level', '$course')";
-                                        mysqli_query($db_server, $query) or
-                                        die("Insert failed. ". mysqli_error($db_server));
-                                        $message = "<strong>Thanks " . $fullname . ", your registration was successful! <a href='index.php'> Click here</a> to login. </strong>";
-                                    }
-                                    mysqli_free_result($result);
+                                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                    $message = "Invalid email format";
                                 }else{
-                                    $message = "Error: could not connect to the database.";
+                                    if (!preg_match("/^[a-zA-Z ]*$/",$fullname)){
+                                        $message = "Invalid name. Only letters and white space allowed.";
+                                    }else{
+                                            if (!preg_match("/^[a-zA-Z ]*$/",$course)){
+                                        $message = "Invalid course. Only letters and white space allowed.";
+                                        }else{
+                                            if($db_server){
+                                                //clean the input now that we have a db connection
+                                                $fullname = clean_string($db_server, $fullname);
+                                                $email = clean_string($db_server, $email);
+                                                $university = clean_string($db_server, $university);
+                                                $level = clean_string($db_server, $level);
+                                                $course = clean_string($db_server, $course);
+                                                $username = clean_string($db_server, $username);
+                                                $password = clean_string($db_server, $password);
+                                                $repeatpassword = clean_string($db_server, $repeatpassword);
+                                                mysqli_select_db($db_server, $db_database);
+                                                // check whether username exists
+                                                $query="SELECT username FROM Students WHERE username='$username'";
+                                                $result=mysqli_query($db_server, $query);
+                                                if ($row = mysqli_fetch_array($result)){
+                                                    $message = "Username already exists. Please try again.";
+                                                }else{
+                                                    $hash = password_hash($password, PASSWORD_DEFAULT);
+                                                    $query = "INSERT INTO Students (username, password, fullname, email, university, level, course) VALUES
+                                                    ('$username', '$hash','$fullname', '$email', '$university', '$level', '$course')";
+                                                    mysqli_query($db_server, $query) or
+                                                    die("Insert failed. ". mysqli_error($db_server));
+                                                    $message = "<strong>Thanks " . $fullname . ", your registration was successful! <a href='index.php'> Click here</a> to login. </strong>";
+                                                }
+                                                mysqli_free_result($result);
+                                            }else{
+                                                $message = "Error: could not connect to the database.";
+                                            }
+                                            mysqli_close($db_server); //include file to do db close
+                                        }
+                                    }
                                 }
-                                mysqli_close($db_server); //include file to do db close
                             }
                         }
-
                     }else{
                         $message = "Both password fields must match";
                     }
                 }else{
-                        $message = "Please fill in all fields";
+                     $message = "Please fill in all fields";
                 }
             } else {
                 $message = "reCAPTCHA failed: ".$data->{'error-codes'}[0];
