@@ -149,8 +149,14 @@ a.footer-link {
 .hero {
     width: 100%;
     padding-top: -50px;
+}
 
+.main-navbar {
+    font-family: 'Open Sans', sans-serif;
+}
 
+a.nav {
+    font-family: 'Open Sans', sans-serif;
 }
 
 
@@ -336,15 +342,17 @@ th {
 }
 
 /*---------------Forum---------------*/
-.comments{
-    border: 1px solid #ddd;
-    padding: 8px;
-    background-color: #f3e9e0;
+a.forum-button:link {
+    color:black;
+    text-decoration:none;
+}
+
+
+a.forum-button:hover {
+    color: blue;
 }
 
 .replies{
-    margin-left: 10px;
-    border: 1px solid #ddd;
-    padding: 8px;
-    background-color: #f3e9e0;
+    margin-left: 45px;
+
 }

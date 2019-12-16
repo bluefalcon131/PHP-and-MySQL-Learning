@@ -16,8 +16,15 @@
     while($row = mysqli_fetch_array($result)){
         //CHECK THAT THE COMMENT USERID MATCHES SESSION USER ID
         if ($row['userID'] == $_SESSION['userID']){
-            $comments .= "<p><strong>" . $row['FullName'] . "</strong>" ."<em> (" . $row['Username'] . ")" . " - " . $row['commDate'] . ")</em><br /> " .$row['comment'] . "</p><hr />";
-            $comments .=" <a href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=account.php'>Delete</a>";
+            $comments .= "<div class = 'comments'><p>" . 
+                            "<strong>" . $row['FullName'] . "</strong>" .
+                            "<em> (" . $row['Username'] . ")" . " - " . 
+                            $row['commDate'] . "</em></br>" .  
+                            $row['comment'] .    "<br/>"; 
+            $comments .= "<i class='fa fa-thumbs-up' style='color:green'></i>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
+            $comments .= "<i class='fa fa-thumbs-down' style='color:#e6300c'></i>&nbsp" . $row['dislike'];
+            $comments .= "&nbsp | &nbsp <a class='forum-button' href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=account.php'><i class='fa fa-trash'></i>   Delete</a>   "; 
+            $comments .= "</p><hr/></div>";
         }
     }
     if (!(isset($comments))){
@@ -33,6 +40,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="stylesheet.css">
 	</head>
 	<body>
@@ -82,7 +90,7 @@
                     </div>
                     <hr>
                     <h1>Your Comments: </h1>
-                    <p><?php echo $comments; echo $message; ?></p>
+                    <p><?php echo $comments; ?></p>
                 </div>
                 
                 <div id="footer">

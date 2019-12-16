@@ -15,7 +15,15 @@
         $query = "DELETE FROM comments WHERE post_ID=$postID";
         mysqli_query($db_server, $query) or
         die("Comment delete failed" . mysqli_error($db_server));
+
+        $reply_query = "SELECT * FROM replies INNER JOIN Students ON replies.userID = Students.ID WHERE replies.post_ID = $postID ORDER BY replies.reply_ID";
+            $reply_result = mysqli_query($db_server, $reply_query);
+            if (!$reply_result) die("Database access failed: " . mysqli_error($db_server));
+            while($row = mysqli_fetch_array($reply_result)){
+                $query = "DELETE FROM replies WHERE reply_ID = ". $row['reply_ID'];
+                mysqli_query($db_server, $query) or
+                die("Reply delete failed" . mysqli_error($db_server));
+            }
         header('Location: ' . $previousURL);
     }
-        
 ?>

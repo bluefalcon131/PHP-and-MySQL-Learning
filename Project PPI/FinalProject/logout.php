@@ -20,15 +20,7 @@ session_destroy();
 <body>
     <div id="wrapper">
         <div id="main">
-            <div id="header">
-                <div id="logo">
-                    <a href="index.php"><img src="images/logo.png" width="100%" alt="PPI Greater Leeds Logo"></a>
-                </div>
-                <div class="main-navbar" id="main-navbar">
-                    <a href="register.php">Register</a>
-                    <a href="index.php">Log In</a>
-                </div>
-            </div>
+            <?php require_once("header_guest.php")?>
 
             <div class="hero">
                 <img src="images/hero-home.jpg" alt="Indonesian Student Association" width="100%">
