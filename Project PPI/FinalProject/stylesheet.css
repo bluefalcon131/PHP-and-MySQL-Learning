@@ -78,8 +78,7 @@ p {
     font-family: 'Gotham', 'sans-serif';
 }
 
-.main-navbar a:hover,
-    {
+.main-navbar a:hover{
     background-color: #ad232d;
 }
 
