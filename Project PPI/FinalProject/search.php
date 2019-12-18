@@ -6,6 +6,7 @@
     $submit = trim($_POST['submit']);
     $data = json_decode($response);
     $output = "";
+    //Tests whether if reCAPTCHA has been submitted
     if ($submit=='Search'){
         $captcha=$_POST['g-recaptcha-response'];
         $url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -13,15 +14,19 @@
         $response =
         file_get_contents($url."?secret=".$secretkey."&response=".$captcha);
         $data = json_decode($response);
+        //If reCAPTCHA us submitted correctly
         if (isset($data->success) AND $data->success==true) {
+            //select the database
             mysqli_select_db($db_server, $db_database);
-            $category_input = clean_string($db_server, $_POST["category_input"]);
-            $search_input = clean_string($db_server, $_POST["search_input"]);
+            //Clean category and search input
+            $category_input = clean_string($db_server, $_POST["category_input"]); // select a category
+            $search_input = clean_string($db_server, $_POST["search_input"]); // search keyword
+            
+            //performs search based on chosen category and entered keyword
             $query = "SELECT ID, FullName, Course, University, Level, Email FROM Students WHERE $category_input LIKE '%$search_input%'";
             // query the database
             mysqli_select_db($db_server, $db_database);
             $result = mysqli_query($db_server, $query);
-            mysqli_query($db_server, "INSERT INTO Students FullName VALUES 'test'");
             if (!$result) die("Database access failed: " . mysqli_error($db_server));
             $message = "<strong>Your search found the following students:</strong>" . "<br/><br/>";
             $tableh ='<th width="450" align="left">Full Name</th>

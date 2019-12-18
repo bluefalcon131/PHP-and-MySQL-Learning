@@ -2,7 +2,7 @@
     require_once("function.php");
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    if ($username&&$password){
+    if ($username && $password){
         session_start();
         require_once("db_connect.php");
         mysqli_select_db($db_server, $db_database) or
@@ -30,17 +30,20 @@
                 $_SESSION['userID']=$db_id;
                 $_SESSION['logged']="logged";
                 header('Location: home.php');
-             }else{
-                $message = "Incorrect password!";
-                 }
-        }else{
-             $message = "That user does not exist!" .
-            "Please <a href='index.php'>try again</a>";
+            }else{
+               $message = "Incorrect password! ";
+                "Please <a href='index.php'>try again</a>";                
             }
-        //$message = "Please enter a valid username/password";       
+        }else{
+            $message = "That user does not exist! " .
+            "Please <a href='index.php'>try again</a>";
+        }    
     mysqli_free_result($result);
     mysqli_close($db_server); 
-    } 
+    } else if ($username || $password){ // If only one input is filled
+        $message = "Username and password must both be filled! " .
+        "Please <a href='index.php'>try again</a>";
+    }
 ?>
 
 <html>

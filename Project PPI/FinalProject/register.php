@@ -3,11 +3,11 @@
     require_once("function.php");
     // Grab the form data
     $submit = trim($_POST['submit']);
-    $fullname = test_input($_POST["fullname"]);
-    $email = test_input($_POST["email"]);
+    $fullname = trim($_POST["fullname"]);
+    $email = trim($_POST["email"]);
     $university = trim($_POST['university']);
     $level = trim($_POST['level']);
-    $course = test_input($_POST['course']);
+    $course = trim($_POST['course']);
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $repeatpassword = trim($_POST['repeatpassword']);
@@ -34,7 +34,7 @@
         Please <a href='logout.php'>logout</a> before
         trying to register.";
     }else{
-    // Next block of code will go here
+    // Check whether reCAPTCHA is coompleted or not
         if ($submit=='Register'){
             $captcha=$_POST['g-recaptcha-response'];
             $url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -42,26 +42,34 @@
             $response =
             file_get_contents($url."?secret=".$secretkey."&response=".$captcha);
             $data = json_decode($response);
+            //If ReCAPTCHA is successfully completed
             if (isset($data->success) AND $data->success==true) {
+                //Checks if all fields are filled
                 if ($fullname&&$email&&$username&&$password&&$repeatpassword&&$university&&$course&&$level){
+                    //Checks if both passwords match
                     if ($password==$repeatpassword){
+                        //Check if username is shorter than 25 characters 
                         if (strlen($username)>25) {
                             $message = "Username is too long";
                         }else{
+                            //Check if the password is between 6-25 characters long
                             if (strlen($password)>25||strlen($password)<6) {
                                 $message = "Password must be 6-25 characters long";
                             }else{
-                                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                    $message = "Invalid email format";
+                                //Check if full name only contains letters and white space
+                                if (!filter_var("/^[a-zA-Z ]*$/",$fullname)){
+                                    $message = "Invalid full name. Only letters and white space allowed.";
                                 }else{
-                                    if (!preg_match("/^[a-zA-Z ]*$/",$fullname)){
-                                        $message = "Invalid name. Only letters and white space allowed.";
+                                    //check if email in entered in valid format using PHP's filter_var() function.
+                                    if (!preg_match($email, FILTER_VALIDATE_EMAIL)){
+                                        $message = "Invalid  email format.";
                                     }else{
-                                            if (!preg_match("/^[a-zA-Z ]*$/",$course)){
+                                        //Check if course only contains letters and white space
+                                        if (!preg_match("/^[a-zA-Z ]*$/",$course)){
                                         $message = "Invalid course. Only letters and white space allowed.";
                                         }else{
                                             if($db_server){
-                                                //clean the input now that we have a db connection
+                                                //Clean the input after DB Connection and Form Validation
                                                 $fullname = clean_string($db_server, $fullname);
                                                 $email = clean_string($db_server, $email);
                                                 $university = clean_string($db_server, $university);
@@ -77,7 +85,9 @@
                                                 if ($row = mysqli_fetch_array($result)){
                                                     $message = "Username already exists. Please try again.";
                                                 }else{
+                                                    //encrypt password with built in hash function
                                                     $hash = password_hash($password, PASSWORD_DEFAULT);
+                                                    //Inserting user input into Students Table
                                                     $query = "INSERT INTO Students (username, password, fullname, email, university, level, course) VALUES
                                                     ('$username', '$hash','$fullname', '$email', '$university', '$level', '$course')";
                                                     mysqli_query($db_server, $query) or
@@ -88,22 +98,22 @@
                                             }else{
                                                 $message = "Error: could not connect to the database.";
                                             }
-                                            mysqli_close($db_server); //include file to do db close
+                                            mysqli_close($db_server); //Close Connection
                                         }
                                     }
                                 }
                             }
-                        }
-                    }else{
-                        $message = "Both password fields must match";
                     }
                 }else{
-                     $message = "Please fill in all fields";
+                     $message = "Both password fields must match";
                 }
             } else {
+                $message = "Please fill in all fields";
+            } 
+        } else {
                 $message = "reCAPTCHA failed: ".$data->{'error-codes'}[0];
             } 
-        }
+    }
     }
 ?>
 

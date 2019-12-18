@@ -10,66 +10,16 @@
     $db_level=$_SESSION['level'];
 
     mysqli_select_db($db_server, $db_database);
-    $query = "SELECT * FROM
-    (SELECT reply_ID, post_ID, userID, comment, sentiment, dislike, commDate FROM replies 
-    UNION ALL 
-    -- -1 is used as the reply_ID it increments from 0 in the table 'replies', thus comments is always ordered first
-    SELECT '-1' AS reply_ID, post_ID, userID, comment, sentiment, dislike, commDate FROM comments) AS content
-    INNER JOIN
-    Students ON content.userID = Students.ID 
-    WHERE Students.ID = " . $_SESSION['userID'] . " 
-    ORDER BY content.commDate, content.post_ID, content.reply_ID";
+    $query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID 
+    WHERE Students.ID = " . $_SESSION['userID'] . " ORDER BY comments.commDate";
 
     $result = mysqli_query($db_server, $query);
     if (!$result) die("Database access failed: " . mysqli_error($db_server) );
     while($row = mysqli_fetch_array($result)){
-        // Open divider per comment
-        $comments .= "<div class = 'comments'><p>";
-        if ($row['reply_ID'] != -1) {   // if it is a reply
-            $comments .= "(reply) ";
+        if ($row['reply_ID'] != NULL) {
+            $comments .= "<p>(reply)</p>";
         }
-        $comments .= "<strong>" . $row['FullName'] . "</strong>";   // Fullname
-        $comments .= "<em> (" . $row['Username'] . ")" . " - ";     // Username
-        $comments .= $row['commDate'] . "</em></br>";               // Comment Date
-        $comments .= $row['comment'] .    "<br/>";                  // Comment content
-
-        // Like indicator
-        if ($row['reply_ID'] == -1) {   // if it is a comment
-            if(!isset($_SESSION["liked_" . $row['post_ID']])){ // Comment is not liked yet
-                $comments .= "<a><i class='fa fa-thumbs-up' style='color:grey'></i></a>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
-            }else{
-                $comments .= "<i class='fa fa-thumbs-up' style='color:green'></i>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
-            }
-            if(!isset($_SESSION["disliked_" . $row['post_ID']])){ // Comment is not disliked yet
-                $comments .= "<a><i class='fa fa-thumbs-down' style='color:grey'></i></a>&nbsp" . $row['dislike'];
-            }else{
-                $comments .= "<i class='fa fa-thumbs-down' style='color:#e6300c'></i>&nbsp" . $row['dislike'];
-            }
-        } else {
-            if(!isset($_SESSION["reply_liked_" . $row['reply_ID']])){ // Comment is not liked yet
-                $comments .= "<a><i class='fa fa-thumbs-up' style='color:grey'></i></a>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
-            }else{
-                $comments .= "<i class='fa fa-thumbs-up' style='color:green'></i>&nbsp" . $row['sentiment'] . "&nbsp &nbsp";
-            }
-            if(!isset($_SESSION["reply_disliked_" . $row['reply_ID']])){ // Comment is not disliked yet
-                $comments .= "<a><i class='fa fa-thumbs-down' style='color:grey'></i></a>&nbsp" . $row['dislike'];
-            }else{
-                $comments .= "<i class='fa fa-thumbs-down' style='color:#e6300c'></i>&nbsp" . $row['dislike'];
-            }
-        }
-
-        // Reply button
-        if ($row['reply_ID'] == -1) {
-            $comments .= "&nbsp | &nbsp" . "<a class='forum-button' href='reply.php?postid=" . $row['post_ID'] . "'><i class='fa fa-reply'></i>   Reply</a>   ";
-        } else {
-            $comments .= "&nbsp | &nbsp" . "<a class='forum-button' href='reply.php?postid=" . $row['post_ID'] . "'>   Go to main comment</a>   ";
-        }
-
-        // Delete Button
-        $comments .="&nbsp | &nbsp" . "<a class='forum-button' href='delete_post.php?pID=" . $row['post_ID'] . "&previousURL=forum.php'><i class='fa fa-trash'></i>   Delete</a>   ";
-        
-        // Close divider per comment
-        $comments .= "</p><hr/></div>";
+        $comments = print_comment_and_replies($row, $comments, $db_server, 0, "account.php");
     }
     mysqli_free_result($result);
     mysqli_close($db_server); 

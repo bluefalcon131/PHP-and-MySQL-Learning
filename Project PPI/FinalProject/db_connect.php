@@ -10,4 +10,5 @@
         die("Unable to connect to MySQL: " . mysqli_error($db_server));
         $db_status = "not connected";
     }
+    mysqli_select_db($db_server, $db_database);
 ?>

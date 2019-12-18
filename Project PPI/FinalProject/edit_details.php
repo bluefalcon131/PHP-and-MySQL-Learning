@@ -19,68 +19,75 @@ $newcourse = trim($_POST['newcourse']);
 
 session_start();
 if(isset($_POST['submit'])){
-        
+    $captcha=$_POST['g-recaptcha-response'];
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $secretkey = "6Le4CAETAAAAAGQftFiDise1KTxFd6qTsowFR-TL"; //secret key
+    $response =
+    file_get_contents($url."?secret=".$secretkey."&response=".$captcha);
+        $data = json_decode($response);
+    if (isset($data->success) AND $data->success==true) {
+            if (strlen($username)>25){
+                $message = "Username is too long";
 
-        if (strlen($username)>25){
-            $message = "Username is too long";
-            
-            }else{
-                require_once("db_connect.php"); 
+                }else{
+                    require_once("db_connect.php"); 
 
-                if($db_server){ 
+                    if($db_server){ 
 
-                    // Cleaning all string inputs
-                    $fullname = clean_string($db_server, $fullname);
-                    $email = clean_string($db_server, $email);
-                    $university = clean_string($db_server, $university);
-                    $level = clean_string($db_server, $level);
-                    $course = clean_string($db_server, $course);
-                    $username = clean_string($db_server, $username);
+                        // Cleaning all string inputs
+                        $fullname = clean_string($db_server, $fullname);
+                        $email = clean_string($db_server, $email);
+                        $university = clean_string($db_server, $university);
+                        $level = clean_string($db_server, $level);
+                        $course = clean_string($db_server, $course);
+                        $username = clean_string($db_server, $username);
 
-                    // Selecting Database
-                    mysqli_select_db($db_server, $db_database);
+                        // Selecting Database
+                        mysqli_select_db($db_server, $db_database);
 
-                    // Check whether the new username exists
-                    $query="SELECT username FROM Students WHERE username='$newusername'";
-                    $result=mysqli_query($db_server, $query);
-                    if (($row = mysqli_fetch_array($result)) && ($username != $newusername)){
-                        $message = "Username already exists. Please try again.";
-                    }else{
-                        // Updating database values
-                        $query = "UPDATE Students SET
-                        Username = '$newusername',
-                        FullName = '$newfullname',
-                        Email = '$newemail',
-                        University = '$newuniversity',
-                        Level = '$newlevel',
-                        Course = '$newcourse' 
-                        WHERE ID =". $_SESSION['userID']."";
-                        mysqli_query($db_server, $query) or
-                        die("Insert failed. ". mysqli_error($db_server));
+                        // Check whether the new username exists
+                        $query="SELECT username FROM Students WHERE username='$newusername'";
+                        $result=mysqli_query($db_server, $query);
+                        if (($row = mysqli_fetch_array($result)) && ($username != $newusername)){
+                            $message = "Username already exists. Please try again.";
+                        }else{
+                            // Updating database values
+                            $query = "UPDATE Students SET
+                            Username = '$newusername',
+                            FullName = '$newfullname',
+                            Email = '$newemail',
+                            University = '$newuniversity',
+                            Level = '$newlevel',
+                            Course = '$newcourse' 
+                            WHERE ID =". $_SESSION['userID']."";
+                            mysqli_query($db_server, $query) or
+                            die("Insert failed. ". mysqli_error($db_server));
 
-                        // Updating Session Values
-                        $_SESSION['username'] = $newusername;
-                        $_SESSION['fullname']= $newfullname;
-                        $_SESSION['email'] = $newemail;
-                        $_SESSION['university'] = $newuniversity;
-                        $_SESSION['level'] = $newlevel;
-                        $_SESSION['course'] = $newcourse;
-                        
-                        // Updating Page Values
-                        $username = $newusername;
-                        $fullname = $newfullname;
-                        $email = $newemail;
-                        $university = $newuniversity;
-                        $level = $newlevel;
-                        $course = $newcourse;
+                            // Updating Session Values
+                            $_SESSION['username'] = $newusername;
+                            $_SESSION['fullname']= $newfullname;
+                            $_SESSION['email'] = $newemail;
+                            $_SESSION['university'] = $newuniversity;
+                            $_SESSION['level'] = $newlevel;
+                            $_SESSION['course'] = $newcourse;
 
-                        $message = "<strong>Profile updated successfully! <a href='account.php'> Click here </a>to go back to your account page. </strong>";
+                            // Updating Page Values
+                            $username = $newusername;
+                            $fullname = $newfullname;
+                            $email = $newemail;
+                            $university = $newuniversity;
+                            $level = $newlevel;
+                            $course = $newcourse;
+
+                            $message = "<strong>Profile updated successfully! <a href='account.php'> Click here </a>to go back to your account page. </strong>";
                 }
                 require_once("db_close.php");
 
             }
         }
-        
+    }else{
+        $message = "reCAPTCHA failed: ".$data->{'error-codes'}[0];
+    } 
 }
 
 ?>
@@ -100,7 +107,7 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="utf-8">
     <title>Leeds Indonesian Student Association</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
@@ -148,7 +155,7 @@ if(isset($_POST['submit'])){
                     </p>
 
                     <div>
-                        
+                        <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g"></div>
                         <input type='submit' name='submit' value='Submit'>
                         <button type='button' name='reset' onclick='resetSelections()'>Reset</button>
                         
