@@ -1,15 +1,20 @@
 <?php
-    require_once("function.php");
+    //includes necessary files for program to run
+    require_once('functions.php'); //includes all necessary functions
+    //cleans user input
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
+    //checks if both username and password field is filled
     if ($username && $password){
-        session_start();
-        require_once("db_connect.php");
+        session_start(); //start PHP session
+        require_once("db_connect.php"); //establishes connection with database
         mysqli_select_db($db_server, $db_database) or
-        die("Couldn't find db");
+        die("Couldn't find db"); //selects database
+        //cleans user input
         $username = clean_string($db_server, $username);
         $password = clean_string($db_server, $password);
-
+        
+        //check if username exists in database
         $query = "SELECT * FROM Students WHERE username='$username'";
         $result = mysqli_query($db_server, $query);
         if($row = mysqli_fetch_array($result)){
@@ -21,6 +26,7 @@
             $db_university = $row['University'];
             $db_course = $row['Course'];
             if (password_verify($password, $db_password)) {
+                //if user successfuly logs in, stores all user data into session variables
                 $_SESSION['username']=$username;
                 $_SESSION['fullname']=$db_fullname;
                 $_SESSION['email']=$db_email;
@@ -86,9 +92,7 @@
                     <p><a href="register.php">Sign up here</a> to access the full website.</p>
                 </div>
             </div>
-            <div id="footer">
-                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-            </div>
+             <?php require_once('footer.php')?>
         </div>
 
     </div>

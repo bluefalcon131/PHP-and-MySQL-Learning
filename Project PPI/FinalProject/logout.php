@@ -31,9 +31,7 @@ session_destroy();
                 <p>
                     <p>Click <a href='index.php'>here</a> to go back to the homepage.</p>
             </div>
-            <div id="footer">
-                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-            </div>
+            <?php require_once('footer.php')?>
         </div>
 
     </div>

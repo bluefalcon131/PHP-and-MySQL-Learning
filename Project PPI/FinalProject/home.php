@@ -23,9 +23,7 @@
                     <p><strong>Perhimpunan Pelajar Indonesia Greater Leeds (PPI Greater Leeds, also known as the Indonesian Student Association in Leeds)</strong> is a Leeds-based Indonesian student organisation that has been actively promoting Indonesian culture and diversity in Leeds. We constantly organise events for our members to get together throughout the year. We are suprvised by the Indonesian Embassy in London. Our mission is to strengthen and cultivate better communication and relations within current students, alumni, as well as the local Indonesian community in Leeds, Huddersfield and Bradford.</p>
                     <p>Here, you'll be able to search and network with other Indonesian students in Leeds, register your details into our system, and have meaningful discussions in our online forum! These are all accessible on the navigation bar above.</p>
                 </div>
-                <div id="footer">
-                    <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-                 </div>
+                 <?php require_once('footer.php')?>
             </div>
 
         </div>

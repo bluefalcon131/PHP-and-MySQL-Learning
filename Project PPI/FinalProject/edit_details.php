@@ -1,34 +1,40 @@
 <?php
-require("function.php");
-include("checklog.php");
-include("db_connect.php");
+    //includes necessary files for program to run
+    require_once('checklog.php'); //checks if session variables have been set --> user has logged in
+    require_once('db_connect.php'); //establishes database connection
+    require_once('functions.php'); //includes all necessary functions inside 
 
-$username = $_SESSION['username'];
-$fullname = $_SESSION['fullname'];
-$email = $_SESSION['email'];
-$university = $_SESSION['university'];
-$level = $_SESSION['level'];
-$course = $_SESSION['course'];
+    //sets session variables
+    $username = $_SESSION['username'];
+    $fullname = $_SESSION['fullname'];
+    $email = $_SESSION['email'];
+    $university = $_SESSION['university'];
+    $level = $_SESSION['level'];
+    $course = $_SESSION['course'];
 
-$newusername = trim($_POST['newusername']);
-$newfullname = trim($_POST['newfullname']);
-$newemail = trim($_POST['newemail']);
-$newuniversity = trim($_POST['newuniversity']);
-$newlevel = trim($_POST['newlevel']);
-$newcourse = trim($_POST['newcourse']);
+    //clean input of new variables
+    $newusername = trim($_POST['newusername']);
+    $newfullname = trim($_POST['newfullname']);
+    $newemail = trim($_POST['newemail']);
+    $newuniversity = trim($_POST['newuniversity']);
+    $newlevel = trim($_POST['newlevel']);
+    $newcourse = trim($_POST['newcourse']);
 
-session_start();
-if(isset($_POST['submit'])){
-    $captcha=$_POST['g-recaptcha-response'];
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $secretkey = "6Le4CAETAAAAAGQftFiDise1KTxFd6qTsowFR-TL"; //secret key
-    $response =
-    file_get_contents($url."?secret=".$secretkey."&response=".$captcha);
-        $data = json_decode($response);
-    if (isset($data->success) AND $data->success==true) {
+    //start PHP session
+    session_start();
+    //check if form is submitted
+    if(isset($_POST['submit'])){
+        $captcha=$_POST['g-recaptcha-response'];
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $secretkey = "6Le4CAETAAAAAGQftFiDise1KTxFd6qTsowFR-TL"; //secret key
+        $response =
+        file_get_contents($url."?secret=".$secretkey."&response=".$captcha);
+            $data = json_decode($response);
+        //check if recaptcha is submitted correctly
+        if (isset($data->success) AND $data->success==true) {
+            //check if username is right length
             if (strlen($username)>25){
-                $message = "Username is too long";
-
+                    $message = "<h4>Username is too long</h4>";
                 }else{
                     require_once("db_connect.php"); 
 
@@ -49,7 +55,7 @@ if(isset($_POST['submit'])){
                         $query="SELECT username FROM Students WHERE username='$newusername'";
                         $result=mysqli_query($db_server, $query);
                         if (($row = mysqli_fetch_array($result)) && ($username != $newusername)){
-                            $message = "Username already exists. Please try again.";
+                            $message = "<h4>Username already exists. Please try again.</h4>";
                         }else{
                             // Updating database values
                             $query = "UPDATE Students SET
@@ -79,16 +85,15 @@ if(isset($_POST['submit'])){
                             $level = $newlevel;
                             $course = $newcourse;
 
-                            $message = "<strong>Profile updated successfully! <a href='account.php'> Click here </a>to go back to your account page. </strong>";
-                }
+                            $message = "<h3><strong>Profile updated successfully!</strong></h3>";
+                        }
                 require_once("db_close.php");
-
+                }
             }
-        }
-    }else{
-        $message = "reCAPTCHA failed: ".$data->{'error-codes'}[0];
-    } 
-}
+        }else{
+            $message = "<h4>reCAPTCHA failed: </h4>".$data->{'error-codes'}[0];
+        } 
+    }
 
 ?>
 
@@ -110,6 +115,7 @@ if(isset($_POST['submit'])){
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 
@@ -124,7 +130,7 @@ if(isset($_POST['submit'])){
 
             <div class="main-info">
                 <h1>Change User Details</h1>
-                <h3><a href='account.php'> Back to account</a></h3>
+                <p><strong><a href='account.php'><i class="fa fa-arrow-left"></i>    Back to account</a></strong></p>
 
                 <form method="post" action="edit_details.php">
                     <h4><?php echo $message; ?></h4>

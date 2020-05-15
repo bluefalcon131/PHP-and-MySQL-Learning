@@ -1,7 +1,9 @@
 <?php
-    require_once('checklog.php');
-    require_once "function.php";
-    require_once "db_connect.php";
+    //includes necessary files for program to run
+    require_once('checklog.php'); //checks if session variables have been set --> user has logged in
+    require_once('db_connect.php'); //establishes database connection
+    require_once('functions.php'); //includes all necessary functions
+
 
     $post_id = clean_string($db_server, $_GET['postid']);
     $message = $comments = $output = "";
@@ -36,7 +38,7 @@
                 }else{
                     $message = "Invalid form submission";
                 }
-                echo "<meta http-equiv='refresh'>";
+                echo "<meta http-equiv='refresh'>"; //refreshes the pages to load reply
             }else{
                 $message = "reCAPTCHA failed: ".$data->{'error-codes'}[0];
             }
@@ -65,10 +67,10 @@
 
             <div class="main-info">
                 <h1>Welcome to the discussion board!</h1>
-                <h4></h4>
-                <div class="login-register">
+                <div>
                     <form action="" method="post">
-                        <h3>Comment</h3>
+                        <h3>Posts</h3>
+                        <p><strong><a href='forum.php'><i class="fa fa-arrow-left"></i>    Back to forum</a></strong></p>
                         <p><?php echo $comments; ?></p>
                         <h4><?php echo $message; ?></h4>
                         <p class="forms">Reply: </p> 
@@ -78,9 +80,7 @@
                     </form>
                 </div>
             </div>
-            <div id="footer">
-                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-            </div>
+            <?php require_once('footer.php')?>
         </div>
 
     </div>

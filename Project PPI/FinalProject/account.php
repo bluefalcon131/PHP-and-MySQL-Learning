@@ -1,7 +1,11 @@
 <?php
-    require_once('checklog.php');
-    require_once('db_connect.php');
-    require_once('function.php');
+
+    //includes necessary files for program to run
+    require_once('checklog.php'); //checks if session variables have been set --> user has logged in
+    require_once('db_connect.php'); //establishes database connection
+    require_once('functions.php'); //includes all necessary functions inside 
+    
+    //sets session variables
     $username=$_SESSION['username'];
     $fullname=$_SESSION['fullname'];
     $db_email=$_SESSION['email'];
@@ -9,21 +13,25 @@
     $db_course=$_SESSION['course'];
     $db_level=$_SESSION['level'];
 
+    //prints comments and replies written by user, check based on userID
     mysqli_select_db($db_server, $db_database);
     $query = "SELECT * FROM comments JOIN Students ON comments.userID = Students.ID 
     WHERE Students.ID = " . $_SESSION['userID'] . " ORDER BY comments.commDate";
-
     $result = mysqli_query($db_server, $query);
     if (!$result) die("Database access failed: " . mysqli_error($db_server) );
+    //checks if user has written any comments
     while($row = mysqli_fetch_array($result)){
+        //checks if user post is a reply
         if ($row['reply_ID'] != NULL) {
             $comments .= "<p>(reply)</p>";
-        }
+        } //prints out comment
         $comments = print_comment_and_replies($row, $comments, $db_server, 0, "account.php");
     }
     mysqli_free_result($result);
     mysqli_close($db_server); 
 ?>
+
+<!---------------------- HTML code ------------------------->
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -80,13 +88,12 @@
                         <br/><br/><br/><br/><br/>
                     </div>
                     <hr>
-                    <h1>Your Comments: </h1>
+                    <h1>Your Posts: </h1>
                     <p><?php echo $comments; ?></p>
                 </div>
                 
-                <div id="footer">
-                    <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-                 </div>
+                <?php require_once('footer.php')?>
+                
             </div>
 
         </div>

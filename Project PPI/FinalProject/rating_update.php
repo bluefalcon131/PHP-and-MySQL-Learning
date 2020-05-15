@@ -1,7 +1,10 @@
 <?php    
-    require_once "checklog.php";
-    require_once "function.php";
-    require_once "db_connect.php";
+    //includes necessary files for program to run
+    require_once('checklog.php'); //checks if session variables have been set --> user has logged in
+    require_once('db_connect.php'); //establishes database connection
+    require_once('functions.php'); //includes all necessary functions
+
+    //clean user input
     $like_id = clean_string($db_server, $_GET['likeid']);
     $dislike_id = clean_string($db_server, $_GET['dislikeid']);
     $clear_id = clean_string($db_server, $_GET['clearid']);

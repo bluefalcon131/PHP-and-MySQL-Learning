@@ -1,6 +1,10 @@
 <?php
-    require_once('checklog.php');
-    include_once('function.php');
+    //includes necessary files for program to run
+    require_once('checklog.php'); //checks if session variables have been set --> user has logged in
+    require_once('db_connect.php'); //establishes database connection
+    require_once('functions.php'); //includes all necessary functions
+    
+    //creates session variable for USERID
     $sess_userID = $_SESSION['userID'];
     if(trim($_POST['submit'])=='submit'){
         if(trim($_POST['delete'] )==1) {
@@ -22,14 +26,13 @@
                 //LOGOUT AND DESTROY SESSION
                 $_SESSION = array();
                 session_destroy();
-                header('Location: index.php');
+                header('Location: index.php'); //redirects user to log in
             }
-                require_once("db_close.php");
+                require_once("db_close.php"); //closes connection
         }else{
-                header('location: home.php');
+                header('location: home.php'); //redirects user to home
         }
     }
-    //include_once('header_logged.php');
 ?>
 
 
@@ -69,9 +72,8 @@
 
             </div>
 
-            <div id="footer">
-                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-            </div>
+            <?php require_once('footer.php')?>
+            
         </div>
 
     </div>

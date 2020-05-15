@@ -2,7 +2,7 @@
     require_once 'db_connect.php';
     require_once('checklog.php');
     $username=$_SESSION['username'];
-    require_once 'function.php';
+    require_once 'functions.php';
     $submit = trim($_POST['submit']);
     $data = json_decode($response);
     $output = "";
@@ -28,7 +28,7 @@
             mysqli_select_db($db_server, $db_database);
             $result = mysqli_query($db_server, $query);
             if (!$result) die("Database access failed: " . mysqli_error($db_server));
-            $message = "<strong>Your search found the following students:</strong>" . "<br/><br/>";
+            $message = "<h3><strong>Your search found the following students:</strong>" . "<br/><br/></h3>";
             $tableh ='<th width="450" align="left">Full Name</th>
                     <th width="150" align="left">Degree</th>
                     <th width="600" align="left">Course</th>
@@ -41,7 +41,7 @@
             //echo $message . $output;
         }else{
             // What happens when the CAPTCHA was entered incorrectly
-            $message = "The reCAPTCHA failed. (" . $data->{'error-codes'}[0] . ")";
+            $message = "<h4>The reCAPTCHA failed. (" . $data->{'error-codes'}[0] . ")</h4>";
         }
     }
 
@@ -76,14 +76,12 @@
                     <div class="g-recaptcha" data-sitekey="6Le4CAETAAAAAJ58ZxBrDGRawcYuHhjxIXJoZ45g">
                     </div>
                 </form>
-                <h3><?php echo $message; ?></h3>
+                <?php echo $message; ?>
                 <p>
                     <?php echo "<table>" . $tableh . $tabler . "</table>"; ?>
                 </p>
             </div>
-            <div id="footer">
-                <p class="footer">© 2019 <a class="footer-link" href="http://www.corinagunawidjaja.myportfolio.com">Corina Gunawidjaja</a>. All Rights Reserved.</p>
-            </div>
+           <?php require_once('footer.php')?>
         </div>
     </div>
 </body>
